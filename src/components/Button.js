@@ -4,7 +4,14 @@ import "components/Button.scss";
 
 export default function Button(props) {
 
-   // Using classnames library -> gives us access to the classNames function
+  /*
+  props
+  confirm: boolean
+  danger: boolean
+  disabled: boolean
+  onClick: function
+  */
+
    const buttonClass = classNames(
       'button', {
          'button--confirm': props.confirm,

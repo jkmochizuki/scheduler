@@ -4,6 +4,17 @@ import DayListItem from "./DayListItem";
 
 export default function DayList(props) {
 
+  /*
+  props
+  days: [
+    { id: number },
+    { name: string },
+    { spots: number }
+  ]
+  value: string
+  onChange: function
+  */
+
   const dayLists = props.days.map((day) => {
     return (
       <DayListItem

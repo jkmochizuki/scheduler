@@ -2,6 +2,11 @@ import React from "react";
 
 export default function Empty (props) {
 
+  /*
+  props
+  onAdd: function
+  */
+
   return (
     <main className="appointment__add">
       <img

@@ -4,6 +4,17 @@ import InterviewerListItem from "./InterviewerListItem";
 
 export default function InterviewerList (props) {
 
+  /*
+  props
+  interviewers: [
+    { id: number },
+    { name: string },
+    { avatar: url }
+  ]
+  value: number
+  onChange: function
+  */
+
   const interviewerList = props.interviewers.map((interviewer) => {
     return (
       <InterviewerListItem
