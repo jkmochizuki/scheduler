@@ -62,14 +62,17 @@ export default function Application(props) {
       </section>
 
       <section className="schedule">
-        <InterviewerList
-          interviewers={interviewers}
-          value={interviewer}
-          onChange={setInterviewer}
-        />
         {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
       </section>
       
     </main>
   );
 }
+
+// To include:
+
+{/* <InterviewerList
+interviewers={interviewers}
+value={interviewer}
+onChange={setInterviewer}
+/> */}
