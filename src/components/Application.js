@@ -50,8 +50,8 @@ export default function Application(props) {
         <nav className="sidebar__menu">
           <DayList
             days={days}
-            day={day}
-            setDay={setDay}
+            value={day}
+            onChange={setDay}
           />
         </nav>
         <img
@@ -64,8 +64,8 @@ export default function Application(props) {
       <section className="schedule">
         <InterviewerList
           interviewers={interviewers}
-          interviewer={interviewer}
-          setInterviewer={setInterviewer}
+          value={interviewer}
+          onChange={setInterviewer}
         />
         {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
       </section>
