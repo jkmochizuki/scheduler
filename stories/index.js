@@ -15,6 +15,8 @@ import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import Confirm from "components/Appointment/Confirm";
+import Status from "components/Appointment/Status";
+import Error from "components/Appointment/Error";
 
 storiesOf("Button", module)
   .addParameters({
@@ -145,12 +147,12 @@ storiesOf("Appointment", module) // module is a webpack module, which is availab
   .add("Appointment", () => <Appointment />) // renders <Appointment> component with no props
   .add("Appointment with Time", () => (
     <Appointment
-      time={"12pm"}
+      time="12pm"
     />
   ))
   .add("Header", () => (
     <Header
-      time={"12pm"}
+      time="12pm"
     />
   ))
   .add("Empty", () => (
@@ -171,5 +173,16 @@ storiesOf("Appointment", module) // module is a webpack module, which is availab
       message="Delete the appointment?"
       onConfirm={action("onConfirm")}
       onCancel={action("onCancel")}
+    />
+  ))
+  .add("Status", () => (
+    <Status
+      message="Deleting"
+    />
+  ))
+  .add("Error", () => (
+    <Error
+      message="Could not delete appointment"
+      onClose={action("onClose")}
     />
   ))
