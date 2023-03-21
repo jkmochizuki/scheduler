@@ -10,6 +10,7 @@ import DayListItem from "components/DayListItem";
 import DayList from "components/DayList";
 import InterviewerListItem from "components/InterviewerListItem";
 import InterviewerList from "components/InterviewerList";
+import Appointment from "components/Appointment/index.js";
 
 storiesOf("Button", module)
   .addParameters({
@@ -130,5 +131,16 @@ storiesOf("InterviewerList", module)
     <InterviewerList
       interviewers={interviewers}
       onChange={action("setInterviewer")}
+    />
+  ));
+
+storiesOf("Appointment", module) // module is a webpack module, which is available on the global (per-file) scope. If it's not included, we need to refresh the browser with each change we make
+  .addParameters({
+    backgrounds: [{ name: "white", value: "#fff", default: true }] // sets the Storybook preview background colour to white
+  })
+  .add("Appointment", () => <Appointment />) // renders <Appointment> component with no props
+  .add("Appointment with Time", () => (
+    <Appointment
+      time={"12pm"}
     />
   ));
