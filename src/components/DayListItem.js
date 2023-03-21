@@ -19,6 +19,7 @@ export default function DayListItem(props) {
   return (
     <li
       className={dayClass}
+      // When we call the setDay action, it changes the day state => the <Application> renders and passes the new day to the <DayList> => <DayList> renders and passes props to the <DayListItem> children causing the updates to the selected visual state.
       onClick={() => props.setDay(props.name)}
     >
       <h2 className="text--regular">{props.name}</h2>
