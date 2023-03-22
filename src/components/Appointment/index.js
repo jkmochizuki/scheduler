@@ -5,6 +5,17 @@ import Show from "./Show";
 import Empty from "./Empty";
 
 export default function Appointment (props) {
+
+  /*
+  props
+  time: string
+  interview: [
+    { student: string },
+    { interviewer:
+      { name: string }
+    }
+  ]
+  */
   
   return (
     <article className="appointment">
