@@ -1,25 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
-
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
+import axios from "axios";
 
 const appointments = {
   "1": {
@@ -74,7 +57,22 @@ const appointmentList = Object.values(appointments).map((appointment) => {
 })
 
 export default function Application(props) {
-  const [day, setDay] = useState('Monday');
+  const [day, setDay] = useState('');
+  const [days, setDays] = useState([]);
+
+  /* request as a side effect to update the component when days data is retrieved */
+  useEffect(() => {
+    axios
+      .get('http://localhost:8001/api/days') 
+      .then((response) => {
+        console.log(response.data);
+        setDays([...response.data])
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+      /* empty dependency because API request does not depend on the state or props of this component => never rerun this request */
+  }, []) 
 
   return (
     <main className="layout">
