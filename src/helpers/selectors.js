@@ -4,7 +4,7 @@ export function getAppointmentsForDay (state, day) {
   if (filteredDays.length > 0) {
     const appointmentsArray = filteredDays[0].appointments;
 
-    // Loops through appointments array for the day and return a new array with the appointments objects that match the ids
+    /* Loops through appointments array for the day and returns a new array with the appointments objects that match the ids */
     const appointmentsForDay = appointmentsArray.map((id) => state.appointments[id]);
     return appointmentsForDay;
   }
@@ -13,6 +13,7 @@ export function getAppointmentsForDay (state, day) {
 
 export function getInterview (state, appointment) {
   if (appointment) {
+    /* Finds the interviewer id and updates the appointment object to include the interviewer object */
     const interviewer = Object.values(state.interviewers).find(interviewer => appointment.interviewer === interviewer.id);
     return {
       ...appointment,
