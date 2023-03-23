@@ -22,3 +22,16 @@ export function getInterview (state, appointment) {
   }
   return null;
 }
+
+export function getInterviewersForDay (state, day) {
+  const filteredDays = state.days.filter(item => item.name === day);
+  
+  if (filteredDays.length > 0) {
+    const interviewersArray = filteredDays[0].interviewers;
+
+    /* Loops through interviewers array for the day and returns a new array with the interviewers objects that match the ids */
+    const interviewersForDay = interviewersArray.map((id) => state.interviewers[id]);
+    return interviewersForDay;
+  }
+  return [];
+}
