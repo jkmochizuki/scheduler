@@ -57,8 +57,16 @@ const appointmentList = Object.values(appointments).map((appointment) => {
 })
 
 export default function Application(props) {
-  const [day, setDay] = useState('');
-  const [days, setDays] = useState([]);
+  /* combines all of the state into a single object */
+  const [state, setState] = useState({
+    day: "",
+    days: [],
+    appointments: {}
+  })
+
+  /* actions to update certain parts of the state */
+  const setDay = day => setState(prev => ({ ...prev, day }));
+  const setDays = days => setState(prev => ({ ...prev, days }));
 
   /* request as a side effect to update the component when days data is retrieved */
   useEffect(() => {
@@ -66,7 +74,7 @@ export default function Application(props) {
       .get('http://localhost:8001/api/days') 
       .then((response) => {
         console.log(response.data);
-        setDays([...response.data])
+        setDays(response.data)
       })
       .catch((err) => {
         console.log(err.response);
@@ -86,8 +94,8 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           <DayList
-            days={days}
-            value={day}
+            days={state.days}
+            value={state.day}
             onChange={setDay}
           />
         </nav>
