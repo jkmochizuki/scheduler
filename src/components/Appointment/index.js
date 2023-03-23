@@ -3,6 +3,8 @@ import "components/Appointment/styles.scss"
 import Header from "components/Appointment/Header";
 import Show from "./Show";
 import Empty from "./Empty";
+import useVisualMode from "hooks/useVisualMode";
+import { EMPTY, SHOW } from "helpers/constants";
 
 export default function Appointment (props) {
 
@@ -15,22 +17,27 @@ export default function Appointment (props) {
   *   interviewer: object - contains the interviewer's name
   */
   
+  /* when props.interview contains a value, we pass SHOW mode, if it is empty then we pass EMPTY mode */
+  const { mode, transition, back } = useVisualMode(
+    props.interview ? SHOW : EMPTY
+  );
+  
   return (
     <article className="appointment">
       <Header
         time={props.time}
       />
-
-      <>
-        {props.interview ?
+      {mode === EMPTY &&
+        <Empty
+          onAdd={() => console.log("Clicked onAdd")}
+        />
+      }
+      {mode === SHOW &&
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer.name}
         />
-        :
-        <Empty/>}
-      </>
-
+      }
     </article>
   );
 }
