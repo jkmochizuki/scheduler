@@ -3,8 +3,8 @@ import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
 import axios from "axios";
-import { getAppointmentsForDay } from "helpers/selectors";
-import { GET_APPOINTMENTS, GET_DAYS } from "helpers/constants";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { GET_APPOINTMENTS, GET_DAYS, GET_INTERVIEWERS } from "helpers/constants";
 
 export default function Application(props) {
   
@@ -12,19 +12,22 @@ export default function Application(props) {
   const [state, setState] = useState({
     day: "",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   })
 
   /* action to update day state */
   const setDay = day => setState(prev => ({ ...prev, day }));
 
-  /* request as a side effect to update the component when days and appointments data is retrieved */
+  /* request as a side effect to update the component when days, appointments, and interviewers data is retrieved */
   useEffect(() => {
     Promise.all([
       axios.get(GET_DAYS),
-      axios.get(GET_APPOINTMENTS)
+      axios.get(GET_APPOINTMENTS),
+      axios.get(GET_INTERVIEWERS)
     ]).then((all) => {
-        setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data})) // set the days and appointments state at the same time
+      console.log(all[2].data)
+        setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data})) // set the days, appointments, and interviewers state at the same time
       })
       .catch((err) => {
         console.log(err.response);
@@ -34,11 +37,14 @@ export default function Application(props) {
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
-  const appointmentList = Object.values(dailyAppointments).map((appointment) => {
+  const schedule = dailyAppointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
+
     return (
       <Appointment
         key={appointment.id}
         {...appointment}
+        interview={interview}
       />
     )
   })
@@ -68,7 +74,7 @@ export default function Application(props) {
       </section>
 
       <section className="schedule">
-        {appointmentList}
+        {schedule}
       </section>
       
     </main>
