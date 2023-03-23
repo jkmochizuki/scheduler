@@ -3,3 +3,4 @@ export const GET_APPOINTMENTS = "http://localhost:8001/api/appointments";
 export const GET_INTERVIEWERS = "http://localhost:8001/api/interviewers";
 export const EMPTY = "EMPTY";
 export const SHOW = "SHOW"
+export const CREATE = "CREATE"

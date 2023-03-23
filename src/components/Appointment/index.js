@@ -4,7 +4,8 @@ import Header from "components/Appointment/Header";
 import Show from "./Show";
 import Empty from "./Empty";
 import useVisualMode from "hooks/useVisualMode";
-import { EMPTY, SHOW } from "helpers/constants";
+import { CREATE, EMPTY, SHOW } from "helpers/constants";
+import Form from "./Form";
 
 export default function Appointment (props) {
 
@@ -29,13 +30,19 @@ export default function Appointment (props) {
       />
       {mode === EMPTY &&
         <Empty
-          onAdd={() => console.log("Clicked onAdd")}
+          onAdd={() => transition(CREATE)}
         />
       }
       {mode === SHOW &&
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer.name}
+        />
+      }
+      {mode === CREATE &&
+        <Form
+          interviewers={[]}
+          onCancel={() => transition(EMPTY)}
         />
       }
     </article>
