@@ -26,7 +26,6 @@ export default function Application(props) {
       axios.get(GET_APPOINTMENTS),
       axios.get(GET_INTERVIEWERS)
     ]).then((all) => {
-      console.log(all[2].data)
         setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data})) // set the days, appointments, and interviewers state at the same time
       })
       .catch((err) => {
