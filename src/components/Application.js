@@ -6,7 +6,7 @@ import axios from "axios";
 import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 import { GET_APPOINTMENTS, GET_DAYS, GET_INTERVIEWERS } from "helpers/constants";
 
-export default function Application(props) {
+export default function Application() {
   
   /* combines all of the state into a single object */
   const [state, setState] = useState({

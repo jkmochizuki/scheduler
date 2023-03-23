@@ -3,11 +3,12 @@ import React from "react";
 
 export default function Confirm (props) {
 
-  /*
-  props
-  message: string
-  onConfirm: function
-  onCancel: function
+ /*
+  * props
+  *
+  * message: string - message to display in the confirmation dialog
+  * onConfirm: function - will be called when the user confirms the action
+  * onCancel: function - will be called when the user cancels the action
   */
 
   return (

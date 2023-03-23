@@ -2,9 +2,10 @@ import React from "react";
 
 export default function Header (props) {
 
-  /*
-  props
-  time: string
+ /*
+  * props
+  *
+  * time: string
   */
 
   return (

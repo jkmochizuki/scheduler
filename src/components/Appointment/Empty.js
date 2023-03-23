@@ -2,9 +2,10 @@ import React from "react";
 
 export default function Empty (props) {
 
-  /*
-  props
-  onAdd: function
+ /*
+  * props
+  *
+  * onAdd: function - will be called when the user adds an item
   */
 
   return (

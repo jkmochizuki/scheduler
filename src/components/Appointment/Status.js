@@ -2,9 +2,9 @@ import React from "react";
 
 export default function Status (props) {
 
-  /*
-  props
-  message: string
+ /*
+  * props
+  * message: string - message to be displayed
   */
 
   return (

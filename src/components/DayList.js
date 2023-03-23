@@ -4,15 +4,15 @@ import DayListItem from "./DayListItem";
 
 export default function DayList(props) {
 
-  /*
-  props
-  days: [
-    { id: number },
-    { name: string },
-    { spots: number }
-  ]
-  value: string
-  onChange: function
+ /*
+  * props
+  *
+  * days: array of objects - representing days of the week. each object contains:
+  *   id: number
+  *   name: string
+  *   spots: number
+  * value: string - value of the currently selected day
+  * onChange: function - will be called when the selected day changes
   */
 
   const dayLists = props.days.map((day) => {

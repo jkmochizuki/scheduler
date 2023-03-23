@@ -2,10 +2,11 @@ import React from "react";
 
 export default function Error (props) {
 
-  /*
-  props
-  message: string
-  onClose: function
+ /*
+  * props
+  *
+  * message: string - message to display in the error notification
+  * onClose: function - will be called when the user closes the notification
   */
 
   return (

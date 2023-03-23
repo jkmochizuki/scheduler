@@ -4,13 +4,17 @@ import React, { useState } from "react";
 
 export default function Form (props) {
 
-  /*
-  props
-  student: string
-  interviewers: array
-  interviewer: number
-  onSave: function
-  onCancel: function
+ /*
+  * props
+  *
+  * student: string - name of the student
+  * interviewers: array of objects - representing interviewers. each object contains:
+  *   id: number
+  *   name: string
+  *   avatar: url
+  * interviewer: number - id of the interviewer who will be conducting the interview
+  * onSave: function - will be called when the user saves the interview
+  * onCancel: function - will be called when the user cancels the interview
   */
 
   const [student, setStudent] = useState(props.student || '');

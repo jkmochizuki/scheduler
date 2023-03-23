@@ -4,12 +4,13 @@ import "components/DayListItem.scss";
 
 export default function DayListItem(props) {
 
-  /*
-  props
-  name: string
-  spots: number
-  selected: boolean
-  setDay: function
+ /*
+  * props
+  *
+  * name: string
+  * spots: number
+  * selected: boolean
+  * setDay: function - will be called when the day is clicked
   */
   
   const dayClass = classNames(

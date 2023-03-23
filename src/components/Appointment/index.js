@@ -6,15 +6,13 @@ import Empty from "./Empty";
 
 export default function Appointment (props) {
 
-  /*
-  props
-  time: string
-  interview: [
-    { student: string },
-    { interviewer:
-      { name: string }
-    }
-  ]
+ /*
+  * props
+  *
+  * time: string
+  * interview: array of objects - representing the appointment's interview. each object contains:
+  *   student: string - name of the student to be interviewed
+  *   interviewer: object - contains the interviewer's name
   */
   
   return (

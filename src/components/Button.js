@@ -5,12 +5,13 @@ import "components/Button.scss";
 export default function Button(props) {
 
   /*
-  props
-  confirm: boolean
-  danger: boolean
-  disabled: boolean
-  onClick: function
-  */
+   * props
+   *
+   * confirm: boolean
+   * danger: boolean
+   * disabled: boolean
+   * onClick: function - will be called when the button is clicked
+   */
 
    const buttonClass = classNames(
       'button', {

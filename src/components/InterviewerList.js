@@ -4,15 +4,15 @@ import InterviewerListItem from "./InterviewerListItem";
 
 export default function InterviewerList (props) {
 
-  /*
-  props
-  interviewers: [
-    { id: number },
-    { name: string },
-    { avatar: url }
-  ]
-  value: number
-  onChange: function
+ /*
+  * props
+  *
+  * interviewers: array of objects - representing interviewers. each object contains:
+  *   id: number
+  *   name: string
+  *   avatar: url
+  * value: number - id of the currently selected interviewer
+  * onChange: function - will be called when the selected interviewer changes
   */
 
   const interviewerList = props.interviewers.map((interviewer) => {
