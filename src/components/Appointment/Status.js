@@ -1,11 +1,10 @@
 import React from "react";
 
-export default function Status (props) {
-
- /*
-  * props
-  * message: string - message to be displayed
-  */
+export default function Status(props) {
+  /*
+   * props
+   * message: string - message to be displayed
+   */
 
   return (
     <main className="appointment__card appointment__card--status">

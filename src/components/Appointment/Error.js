@@ -1,13 +1,12 @@
 import React from "react";
 
-export default function Error (props) {
-
- /*
-  * props
-  *
-  * message: string - message to display in the error notification
-  * onClose: function - will be called when the user closes the notification
-  */
+export default function Error(props) {
+  /*
+   * props
+   *
+   * message: string - message to display in the error notification
+   * onClose: function - will be called when the user closes the notification
+   */
 
   return (
     <main className="appointment__card appointment__card--error">

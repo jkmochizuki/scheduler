@@ -1,15 +1,14 @@
 import React from "react";
 
-export default function Show (props) {
-
- /*
-  * props
-  *
-  * student: string - name of the student
-  * interviewer: object - representing the interviewer
-  * onEdit: function - will be called when the user wants to edit the appointment
-  * onDelete: function - will be called when the user wants to delete the appointment
-  */
+export default function Show(props) {
+  /*
+   * props
+   *
+   * student: string - name of the student
+   * interviewer: object - representing the interviewer
+   * onEdit: function - will be called when the user wants to edit the appointment
+   * onDelete: function - will be called when the user wants to delete the appointment
+   */
 
   return (
     <main className="appointment__card appointment__card--show">

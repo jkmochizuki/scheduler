@@ -3,27 +3,28 @@ import classNames from "classnames";
 import "components/DayListItem.scss";
 
 export default function DayListItem(props) {
+  /*
+   * props
+   *
+   * name: string
+   * spots: number
+   * selected: boolean
+   * setDay: function - will be called when the day is clicked
+   */
 
- /*
-  * props
-  *
-  * name: string
-  * spots: number
-  * selected: boolean
-  * setDay: function - will be called when the day is clicked
-  */
-  
   const dayClass = classNames(
-    'day-list__item',
-    props.selected && 'day-list__item--selected',
-    props.spots === 0 && 'day-list__item--full'
-  )
+    "day-list__item",
+    props.selected && "day-list__item--selected",
+    props.spots === 0 && "day-list__item--full"
+  );
 
   const formatSpots = (spots) => {
-    return !spots ? 'no spots remaining' :
-           spots === 1 ? '1 spot remaining' :
-           `${spots} spots remaining`;
-  }
+    return !spots
+      ? "no spots remaining"
+      : spots === 1
+      ? "1 spot remaining"
+      : `${spots} spots remaining`;
+  };
 
   return (
     <li

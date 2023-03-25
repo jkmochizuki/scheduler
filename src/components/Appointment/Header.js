@@ -1,12 +1,11 @@
 import React from "react";
 
-export default function Header (props) {
-
- /*
-  * props
-  *
-  * time: string
-  */
+export default function Header(props) {
+  /*
+   * props
+   *
+   * time: string
+   */
 
   return (
     <header className="appointment__time">

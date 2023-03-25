@@ -1,12 +1,11 @@
 import React from "react";
 
-export default function Empty (props) {
-
- /*
-  * props
-  *
-  * onAdd: function - will be called when the user adds an item
-  */
+export default function Empty(props) {
+  /*
+   * props
+   *
+   * onAdd: function - will be called when the user adds an item
+   */
 
   return (
     <main className="appointment__add">
@@ -16,6 +15,6 @@ export default function Empty (props) {
         alt="Add"
         onClick={props.onAdd}
       />
-    </main> 
+    </main>
   );
 }

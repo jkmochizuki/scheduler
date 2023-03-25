@@ -3,17 +3,16 @@ import "components/DayListItem.scss";
 import DayListItem from "./DayListItem";
 
 export default function DayList(props) {
-
- /*
-  * props
-  *
-  * days: array of objects - representing days of the week. each object contains:
-  *   id: number
-  *   name: string
-  *   spots: number
-  * value: string - value of the currently selected day
-  * onChange: function - will be called when the selected day changes
-  */
+  /*
+   * props
+   *
+   * days: array of objects - representing days of the week. each object contains:
+   *   id: number
+   *   name: string
+   *   spots: number
+   * value: string - value of the currently selected day
+   * onChange: function - will be called when the selected day changes
+   */
 
   const dayLists = props.days.map((day) => {
     return (
@@ -25,11 +24,7 @@ export default function DayList(props) {
         setDay={() => props.onChange(day.name)}
       />
     );
-  })
+  });
 
-  return (
-    <ul>
-      {dayLists}
-    </ul>
-  );
+  return <ul>{dayLists}</ul>;
 }

@@ -3,7 +3,6 @@ import classNames from "classnames";
 import "components/Button.scss";
 
 export default function Button(props) {
-
   /*
    * props
    *
@@ -13,19 +12,18 @@ export default function Button(props) {
    * onClick: function - will be called when the button is clicked
    */
 
-   const buttonClass = classNames(
-      'button', {
-         'button--confirm': props.confirm,
-         'button--danger': props.danger
-      })
+  const buttonClass = classNames("button", {
+    "button--confirm": props.confirm,
+    "button--danger": props.danger
+  });
 
-   return (
-      <button
-         disabled={props.disabled}
-         onClick={props.onClick}
-         className={buttonClass}
-      >
-         {props.children}
-      </button>
-   );
+  return (
+    <button
+      disabled={props.disabled}
+      onClick={props.onClick}
+      className={buttonClass}
+    >
+      {props.children}
+    </button>
+  );
 }
