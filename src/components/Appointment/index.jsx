@@ -3,13 +3,14 @@ import "components/Appointment/styles.scss";
 import Header from "components/Appointment/Header";
 import Show from "./Show";
 import Empty from "./Empty";
+import Confirm from "./Confirm";
 import Status from "./Status";
 import useVisualMode from "hooks/useVisualMode";
-import { CREATE, EMPTY, SAVING, SHOW } from "helpers/constants";
+import { CONFIRM, CREATE, DELETING, EMPTY, SAVING, SHOW } from "helpers/constants";
 import Form from "./Form";
 
 export default function Appointment(props) {
-  console.log(props)
+  console.log(props);
   /*
    * props
    *
@@ -29,14 +30,23 @@ export default function Appointment(props) {
   function save(name, interviewer) {
     const interview = {
       student: name,
-      interviewer
+      interviewer,
     };
     transition(SAVING, true);
-    props.bookInterview(props.id, interview)
-    .then(() => {
-      transition(SHOW, true); 
-    })
-    
+    props.bookInterview(props.id, interview).then(() => {
+      transition(SHOW, true);
+    });
+  }
+
+  function remove(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer,
+    };
+    transition(DELETING, true);
+    props.cancelInterview(props.id, interview).then(() => {
+      transition(EMPTY, true);
+    });  
   }
 
   return (
@@ -47,6 +57,7 @@ export default function Appointment(props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer.name}
+          onDelete={() => transition(CONFIRM)}
         />
       )}
       {mode === CREATE && (
@@ -56,7 +67,14 @@ export default function Appointment(props) {
           onSave={save}
         />
       )}
-      {mode === SAVING && <Status message='Saving'/>}
+      {mode === SAVING && <Status message="Saving" />}
+      {mode === CONFIRM && (
+        <Confirm
+          message="Are you sure you woild like to delete?"
+          onConfirm={remove}
+          onCancel={() => transition(SHOW)}
+        />)}
+      {mode === DELETING && <Status message="Deleting" />}
     </article>
   );
 }

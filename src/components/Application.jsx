@@ -48,7 +48,7 @@ export default function Application() {
   }, []);
 
   function bookInterview(id, interview) {
-    console.log('bookInterview:', id, interview);
+    console.log("bookInterview:", id, interview);
 
     const appointment = {
       ...state.appointments[id],
@@ -60,20 +60,40 @@ export default function Application() {
       [id]: appointment
     };
 
-    /* put request to update appointments state */
-    return axios.put(`http://localhost:8001/api/appointments/${id}`, appointments[id]) // appointments[id] is the data to be sent to the server in the req.body
-    .then((res) => {
-      setState({ ...state, appointments });
-    })
+    /* put request to the API to update the appointment with the interview */
+    return axios
+      .put(`http://localhost:8001/api/appointments/${id}`, appointments[id]) // appointments[id] is the data to be sent to the server in the req.body
+      .then((res) => {
+        setState({ ...state, appointments });
+      });
   }
-  
+
+  function cancelInterview (id, interview) {
+    console.log("cancelInterview:", id, interview);    
+
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    }
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return axios
+      .delete(`http://localhost:8001/api/appointments/${id}`, appointments[id])
+      .then((res) => {
+        setState({ ...state, appointments });
+      })
+  }
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     const interviewers = getInterviewersForDay(state, state.day);
-    
+
     return (
       <Appointment
         key={appointment.id}
@@ -81,6 +101,7 @@ export default function Application() {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });

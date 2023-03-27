@@ -5,3 +5,5 @@ export const EMPTY = "EMPTY";
 export const SHOW = "SHOW";
 export const CREATE = "CREATE";
 export const SAVING = "SAVING";
+export const CONFIRM = "CONFIRM";
+export const DELETING = "DELETING";
