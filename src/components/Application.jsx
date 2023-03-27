@@ -47,17 +47,40 @@ export default function Application() {
     /* empty dependency because API request does not depend on the state or props of this component => never rerun this request */
   }, []);
 
+  function bookInterview(id, interview) {
+    console.log('bookInterview:', id, interview);
+
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    /* put request to update appointments state */
+    return axios.put(`http://localhost:8001/api/appointments/${id}`, appointments[id]) // appointments[id] is the data to be sent to the server in the req.body
+    .then((res) => {
+      setState({ ...state, appointments });
+    })
+  }
+  
+
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     const interviewers = getInterviewersForDay(state, state.day);
+    
     return (
       <Appointment
         key={appointment.id}
         {...appointment}
         interview={interview}
         interviewers={interviewers}
+        bookInterview={bookInterview}
       />
     );
   });

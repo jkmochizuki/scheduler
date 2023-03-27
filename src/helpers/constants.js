@@ -4,3 +4,4 @@ export const GET_INTERVIEWERS = "http://localhost:8001/api/interviewers";
 export const EMPTY = "EMPTY";
 export const SHOW = "SHOW";
 export const CREATE = "CREATE";
+export const SAVING = "SAVING";
