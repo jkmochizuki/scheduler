@@ -7,7 +7,17 @@ import Confirm from "./Confirm";
 import Status from "./Status";
 import Error from "./Error";
 import useVisualMode from "hooks/useVisualMode";
-import { CONFIRM, CREATE, DELETING, EDIT, EMPTY, ERROR_DELETE, ERROR_SAVE, SAVING, SHOW } from "helpers/constants";
+import {
+  CONFIRM,
+  CREATE,
+  DELETING,
+  EDIT,
+  EMPTY,
+  ERROR_DELETE,
+  ERROR_SAVE,
+  SAVING,
+  SHOW,
+} from "helpers/constants";
 import Form from "./Form";
 
 export default function Appointment(props) {
@@ -34,29 +44,21 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    transition(SAVING, true);
-    props.bookInterview(props.id, interview)
-    .then(() => {
-      transition(SHOW, true);
-    })
-    .catch((err) => {
-      transition(ERROR_SAVE, true);
-    })
+
+    transition(SAVING);
+
+    props
+      .bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch((err) => transition(ERROR_SAVE, true)); // ERROR_SAVE replaces the SAVING mode in the history state
   }
 
-  function destroy(name, interviewer) {
-    const interview = {
-      student: name,
-      interviewer
-    };
+  function destroy(event) {
     transition(DELETING, true);
-    props.cancelInterview(props.id, interview)
-    .then(() => {
-      transition(EMPTY, true);
-    })
-    .catch((err) => {
-      transition(ERROR_DELETE, true)
-    })
+    props
+      .cancelInterview(props.id)
+      .then(() => transition(EMPTY))
+      .catch((err) => transition(ERROR_DELETE, true));
   }
 
   return (
@@ -93,18 +95,15 @@ export default function Appointment(props) {
           message="Are you sure you would like to delete?"
           onConfirm={destroy}
           onCancel={() => transition(SHOW)}
-        />)}
+        />
+      )}
       {mode === DELETING && <Status message="Deleting" />}
       {mode === ERROR_SAVE && (
-        <Error
-          message="Could not save."
-          onClose={() => transition(EMPTY)}
-        />)}
+        <Error message="Could not save." onClose={() => transition(EMPTY)} />
+      )}
       {mode === ERROR_DELETE && (
-        <Error
-          message="Could not delete"
-          onClose={() => transition(SHOW)}
-        />)} 
+        <Error message="Could not delete" onClose={() => back()} />
+      )}
     </article>
   );
 }
