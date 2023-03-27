@@ -76,7 +76,7 @@ export default function Appointment(props) {
       {mode === CREATE && (
         <Form
           interviewers={props.interviewers}
-          onCancel={() => transition(EMPTY)}
+          onCancel={() => back()}
           onSave={save}
         />
       )}
@@ -85,7 +85,7 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer.id}
           interviewers={props.interviewers}
-          onCancel={() => transition(SHOW)}
+          onCancel={() => back()}
           onSave={save}
         />
       )}
@@ -94,12 +94,12 @@ export default function Appointment(props) {
         <Confirm
           message="Are you sure you would like to delete?"
           onConfirm={destroy}
-          onCancel={() => transition(SHOW)}
+          onCancel={() => back()}
         />
       )}
       {mode === DELETING && <Status message="Deleting" />}
       {mode === ERROR_SAVE && (
-        <Error message="Could not save." onClose={() => transition(EMPTY)} />
+        <Error message="Could not save." onClose={() => back()} />
       )}
       {mode === ERROR_DELETE && (
         <Error message="Could not delete" onClose={() => back()} />
