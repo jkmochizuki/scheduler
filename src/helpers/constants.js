@@ -8,3 +8,5 @@ export const EDIT = "EDIT";
 export const SAVING = "SAVING";
 export const CONFIRM = "CONFIRM";
 export const DELETING = "DELETING";
+export const ERROR_SAVE = "ERROR_SAVE";
+export const ERROR_DELETE = "ERROR_DELETE";
