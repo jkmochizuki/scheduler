@@ -36,44 +36,69 @@ export default function useApplicationData() {
       .catch((err) => {
         console.log("error:", err);
       });
-    /* empty dependency because API request does not depend on the state or props of this component => never rerun this request */
   }, []);
 
+  /* when an appointment is added or removed, it updates the number of spots remaining in that day */
+  const updateSpots = (appointments, id) => {
+    const day = state.days.find((day) => day.appointments.includes(id));
+    const spots = day.appointments.filter(
+      (appointmentId) => appointments[appointmentId].interview === null
+    ).length;
+
+    return state.days.map((d) =>
+      d.appointments.includes(id) ? { ...d, spots } : d
+    );
+  };
+
   /* makes an HTTP request and updates the local state when a new interview is booked */
-  function bookInterview(id, interview) {
+  const bookInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview }
+      interview: { ...interview },
     };
 
     const appointments = {
       ...state.appointments,
-      [id]: appointment
+      [id]: appointment,
     };
 
     return axios
       .put(`http://localhost:8001/api/appointments/${id}`, appointments[id]) // appointments[id] is the data to be sent to the server in the req.body
       .then((res) => {
-        setState({ ...state, appointments });
+        setState({
+          ...state,
+          appointments,
+          days: updateSpots(appointments, id),
+        });
+      })
+      .catch((err) => {
+        console.log("error:", err);
       });
   }
 
   /* makes an HTTP request and updates the local state when an interview is canceled */
-  function cancelInterview(id) {
+  const cancelInterview = (id) => {
     const appointment = {
       ...state.appointments[id],
-      interview: null
+      interview: null,
     };
 
     const appointments = {
       ...state.appointments,
-      [id]: appointment
+      [id]: appointment,
     };
 
     return axios
       .delete(`http://localhost:8001/api/appointments/${id}`, appointments[id])
       .then((res) => {
-        setState({ ...state, appointments });
+        setState({
+          ...state,
+          appointments,
+          days: updateSpots(appointments, id),
+        });
+      })
+      .catch((err) => {
+        console.log("error:", err);
       });
   }
 
