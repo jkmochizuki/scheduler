@@ -1,22 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 import {
   GET_APPOINTMENTS,
   GET_DAYS,
   GET_INTERVIEWERS,
+  SET_APPLICATION_DATA,
+  SET_DAY,
+  SET_INTERVIEW,
 } from "helpers/constants";
 
 export default function useApplicationData() {
   /* state */
-  const [state, setState] = useState({
+  const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {},
   });
 
+  function reducer(state, action) {
+    switch (action.type) {
+      case SET_DAY:
+        return { ...state, day: action.value };
+      case SET_APPLICATION_DATA:
+        return {
+          ...state,
+          days: action.value[0].data,
+          appointments: action.value[1].data,
+          interviewers: action.value[2].data,
+        };
+      case SET_INTERVIEW:
+        return {
+          ...state,
+          appointments: action.value.appointments,
+          days: updateSpots(action.value.appointments, action.value.id)
+        }
+      default:
+        throw new Error(
+          `Tried to reduce with unsupported action type: ${action.type}`
+        );
+    }
+  }
+
   /* sets the current day */
-  const setDay = (day) => setState((prev) => ({ ...prev, day }));
+  const setDay = (day) => { dispatch({ type: SET_DAY, value: day }) };
 
   /* hook that fires only after the initial render, to load days, appointments, and interviewers */
   useEffect(() => {
@@ -26,12 +53,7 @@ export default function useApplicationData() {
       axios.get(GET_INTERVIEWERS),
     ])
       .then((all) => {
-        setState((prev) => ({
-          ...prev,
-          days: all[0].data,
-          appointments: all[1].data,
-          interviewers: all[2].data,
-        }));
+        dispatch({ type: SET_APPLICATION_DATA, value: all });
       })
       .catch((err) => {
         console.log("error:", err);
@@ -68,11 +90,7 @@ export default function useApplicationData() {
     return axios
       .put(`http://localhost:8001/api/appointments/${id}`, appointments[id]) // appointments[id] is the data to be sent to the server in the req.body
       .then((res) => {
-        setState({
-          ...state,
-          appointments,
-          days: updateSpots(appointments, id),
-        });
+        dispatch({ type: SET_INTERVIEW, value: { appointments, id } })
       })
       .catch((err) => {
         console.log("error:", err);
@@ -94,11 +112,7 @@ export default function useApplicationData() {
     return axios
       .delete(`http://localhost:8001/api/appointments/${id}`, appointments[id])
       .then((res) => {
-        setState({
-          ...state,
-          appointments,
-          days: updateSpots(appointments, id),
-        });
+        dispatch({ type: SET_INTERVIEW, value: { appointments, id } });
       })
       .catch((err) => {
         console.log("error:", err);
