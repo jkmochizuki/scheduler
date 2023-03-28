@@ -33,8 +33,8 @@ export default function useApplicationData() {
         return {
           ...state,
           appointments: action.value.appointments,
-          days: updateSpots(action.value.appointments, action.value.id)
-        }
+          days: action.value.days
+        };
       default:
         throw new Error(
           `Tried to reduce with unsupported action type: ${action.type}`
@@ -43,7 +43,9 @@ export default function useApplicationData() {
   }
 
   /* sets the current day */
-  const setDay = (day) => { dispatch({ type: SET_DAY, value: day }) };
+  const setDay = (day) => {
+    dispatch({ type: SET_DAY, value: day });
+  };
 
   /* hook that fires only after the initial render, to load days, appointments, and interviewers */
   useEffect(() => {
@@ -86,11 +88,13 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment,
     };
+    
+    const days = updateSpots(appointments, id);
 
     return axios
       .put(`http://localhost:8001/api/appointments/${id}`, appointments[id]) // appointments[id] is the data to be sent to the server in the req.body
       .then((res) => {
-        dispatch({ type: SET_INTERVIEW, value: { appointments, id } })
+        dispatch({ type: SET_INTERVIEW, value: { appointments, days } });
       })
       .catch((err) => {
         console.log("error:", err);
@@ -109,10 +113,12 @@ export default function useApplicationData() {
       [id]: appointment,
     };
 
+    const days = updateSpots(appointments, id);
+
     return axios
       .delete(`http://localhost:8001/api/appointments/${id}`, appointments[id])
       .then((res) => {
-        dispatch({ type: SET_INTERVIEW, value: { appointments, id } });
+        dispatch({ type: SET_INTERVIEW, value: { appointments, days } });
       })
       .catch((err) => {
         console.log("error:", err);
