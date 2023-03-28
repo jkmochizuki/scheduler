@@ -30,10 +30,20 @@ export default function useApplicationData() {
           interviewers: action.value[2].data,
         };
       case SET_INTERVIEW:
+        const appointment = {
+          ...state.appointments[action.value.id],
+          interview: { ...action.value.interview },
+        };
+        const appointments = {
+          ...state.appointments,
+          [action.value.id]: appointment,
+        };
+        const days = updateSpots(appointments, action.value.id);
+
         return {
           ...state,
-          appointments: action.value.appointments,
-          days: action.value.days
+          appointments,
+          days,
         };
       default:
         throw new Error(
@@ -62,34 +72,6 @@ export default function useApplicationData() {
       });
   }, []);
 
-    useEffect(() => {
-    const socket = new WebSocket('ws://localhost:8001', ['protocolOne', 'protocolTwo'])
-      socket.onopen = (event) => {
-        socket.send("ping");
-      };
-      socket.onmessage = (event) => {
-        const msg = JSON.parse(event.data);
-        if (msg.type === SET_INTERVIEW) {
-          const interview = msg.interview;
-          const id = msg.id;
-          
-          const appointment = {
-            ...state.appointments[id],
-            interview: { ...interview },
-          };
-      
-          const appointments = {
-            ...state.appointments,
-            [id]: appointment,
-          };
-          
-          const days = updateSpots(appointments, id);
-          
-          dispatch({ type: SET_INTERVIEW, value: { appointments, days } });
-        }
-      };
-  }, [])
-
   /* when an appointment is added or removed, it updates the number of spots remaining in that day */
   const updateSpots = (appointments, id) => {
     const day = state.days.find((day) => day.appointments.includes(id));
@@ -107,22 +89,10 @@ export default function useApplicationData() {
 
   /* makes an HTTP request and updates the local state when a new interview is booked */
   const bookInterview = (id, interview) => {
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview },
-    };
-
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment,
-    };
-    
-    const days = updateSpots(appointments, id);
-
     return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, appointment) // appointments[id] is the data to be sent to the server in the req.body
-      .then((res) => {
-        dispatch({ type: SET_INTERVIEW, value: { appointments, days } });
+      .put(`http://localhost:8001/api/appointments/${id}`, { interview })
+      .then(() => {
+        dispatch({ type: SET_INTERVIEW, value: { id, interview } });
       })
       .catch((err) => {
         console.log("error:", err);
@@ -131,27 +101,29 @@ export default function useApplicationData() {
 
   /* makes an HTTP request and updates the local state when an interview is canceled */
   const cancelInterview = (id) => {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null,
-    };
-
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment,
-    };
-
-    const days = updateSpots(appointments, id);
-
     return axios
-      .delete(`http://localhost:8001/api/appointments/${id}`, null)
-      .then((res) => {
-        dispatch({ type: SET_INTERVIEW, value: { appointments, days } });
+      .delete(`http://localhost:8001/api/appointments/${id}`)
+      .then(() => {
+        dispatch({ type: SET_INTERVIEW, value: { id, interview: null } });
       })
       .catch((err) => {
         console.log("error:", err);
       });
   };
+
+  useEffect(() => {
+    const socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+    socket.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
+      if (msg.type === SET_INTERVIEW) {
+        const interview = msg.interview;
+        const id = msg.id;
+
+        dispatch({ type: SET_INTERVIEW, value: { id, interview } });
+      }
+    };
+    return () => socket.close();
+  }, []);
 
   return { state, setDay, bookInterview, cancelInterview };
 }
