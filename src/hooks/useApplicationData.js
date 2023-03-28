@@ -19,6 +19,22 @@ export default function useApplicationData() {
   });
 
   function reducer(state, action) {
+    /* when an appointment is added or removed, it updates the number of spots remaining in that day */
+    const updateSpots = (appointments, id) => {
+      const day = state.days.find((day) => day.appointments.includes(id));
+      const nullAppointments = day.appointments.filter(
+        (appointmentId) => appointments[appointmentId].interview === null
+      );
+      const spots = nullAppointments.length;
+  
+      const days = state.days.map((d) =>
+        d.appointments.includes(id) ? { ...d, spots } : d
+      );
+  
+      return days;
+    };
+
+    /* dispatch actions to set state */
     switch (action.type) {
       case SET_DAY:
         return { ...state, day: action.value };
@@ -32,18 +48,18 @@ export default function useApplicationData() {
       case SET_INTERVIEW:
         const appointment = {
           ...state.appointments[action.value.id],
-          interview: { ...action.value.interview },
+          interview: action.value.interview,
         };
         const appointments = {
           ...state.appointments,
           [action.value.id]: appointment,
         };
-        // const days = updateSpots(appointments, action.value.id);
+        const days = updateSpots(appointments, action.value.id);
 
         return {
           ...state,
           appointments,
-          // days,
+          days
         };
       default:
         throw new Error(
@@ -72,20 +88,6 @@ export default function useApplicationData() {
       });
   }, []);
 
-  /* when an appointment is added or removed, it updates the number of spots remaining in that day */
-  const updateSpots = (appointments, id) => {
-    const day = state.days.find((day) => day.appointments.includes(id));
-    const nullAppointments = day.appointments.filter(
-      (appointmentId) => appointments[appointmentId].interview === null
-    );
-    const spots = nullAppointments.length;
-
-    const days = state.days.map((d) =>
-      d.appointments.includes(id) ? { ...d, spots } : d
-    );
-
-    return days;
-  };
 
   /* makes an HTTP request and updates the local state when a new interview is booked */
   const bookInterview = (id, interview) => {
@@ -100,9 +102,9 @@ export default function useApplicationData() {
   };
 
   /* makes an HTTP request and updates the local state when an interview is canceled */
-  const cancelInterview = (id) => {
+  const cancelInterview = (id, interview) => {
     return axios
-      .delete(`http://localhost:8001/api/appointments/${id}`)
+      .delete(`http://localhost:8001/api/appointments/${id}`, { interview })
       .then(() => {
         dispatch({ type: SET_INTERVIEW, value: { id, interview: null } });
       })
