@@ -41,13 +41,16 @@ export default function useApplicationData() {
   /* when an appointment is added or removed, it updates the number of spots remaining in that day */
   const updateSpots = (appointments, id) => {
     const day = state.days.find((day) => day.appointments.includes(id));
-    const spots = day.appointments.filter(
+    const nullAppointments = day.appointments.filter(
       (appointmentId) => appointments[appointmentId].interview === null
-    ).length;
+    );
+    const spots = nullAppointments.length;
 
-    return state.days.map((d) =>
+    const days = state.days.map((d) =>
       d.appointments.includes(id) ? { ...d, spots } : d
     );
+
+    return days;
   };
 
   /* makes an HTTP request and updates the local state when a new interview is booked */
@@ -74,7 +77,7 @@ export default function useApplicationData() {
       .catch((err) => {
         console.log("error:", err);
       });
-  }
+  };
 
   /* makes an HTTP request and updates the local state when an interview is canceled */
   const cancelInterview = (id) => {
@@ -100,7 +103,7 @@ export default function useApplicationData() {
       .catch((err) => {
         console.log("error:", err);
       });
-  }
+  };
 
   return { state, setDay, bookInterview, cancelInterview };
 }
