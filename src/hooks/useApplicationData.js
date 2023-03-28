@@ -38,12 +38,12 @@ export default function useApplicationData() {
           ...state.appointments,
           [action.value.id]: appointment,
         };
-        const days = updateSpots(appointments, action.value.id);
+        // const days = updateSpots(appointments, action.value.id);
 
         return {
           ...state,
           appointments,
-          days,
+          // days,
         };
       default:
         throw new Error(
@@ -111,6 +111,7 @@ export default function useApplicationData() {
       });
   };
 
+  /* hook to connect to a WebSocket server */
   useEffect(() => {
     const socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     socket.onmessage = (event) => {

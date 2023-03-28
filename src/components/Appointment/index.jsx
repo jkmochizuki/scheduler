@@ -40,6 +40,7 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
+  /* updates the state when the update comes from WebSocket server */
   useEffect(() => {
     if (props.interview && mode === EMPTY) {
      transition(SHOW);
