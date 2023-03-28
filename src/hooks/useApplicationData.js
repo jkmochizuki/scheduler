@@ -62,6 +62,34 @@ export default function useApplicationData() {
       });
   }, []);
 
+    useEffect(() => {
+    const socket = new WebSocket('ws://localhost:8001', ['protocolOne', 'protocolTwo'])
+      socket.onopen = (event) => {
+        socket.send("ping");
+      };
+      socket.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        if (msg.type === SET_INTERVIEW) {
+          const interview = msg.interview;
+          const id = msg.id;
+          
+          const appointment = {
+            ...state.appointments[id],
+            interview: { ...interview },
+          };
+      
+          const appointments = {
+            ...state.appointments,
+            [id]: appointment,
+          };
+          
+          const days = updateSpots(appointments, id);
+          
+          dispatch({ type: SET_INTERVIEW, value: { appointments, days } });
+        }
+      };
+  }, [])
+
   /* when an appointment is added or removed, it updates the number of spots remaining in that day */
   const updateSpots = (appointments, id) => {
     const day = state.days.find((day) => day.appointments.includes(id));
@@ -92,7 +120,7 @@ export default function useApplicationData() {
     const days = updateSpots(appointments, id);
 
     return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, appointments[id]) // appointments[id] is the data to be sent to the server in the req.body
+      .put(`http://localhost:8001/api/appointments/${id}`, appointment) // appointments[id] is the data to be sent to the server in the req.body
       .then((res) => {
         dispatch({ type: SET_INTERVIEW, value: { appointments, days } });
       })
@@ -116,7 +144,7 @@ export default function useApplicationData() {
     const days = updateSpots(appointments, id);
 
     return axios
-      .delete(`http://localhost:8001/api/appointments/${id}`, appointments[id])
+      .delete(`http://localhost:8001/api/appointments/${id}`, null)
       .then((res) => {
         dispatch({ type: SET_INTERVIEW, value: { appointments, days } });
       })
