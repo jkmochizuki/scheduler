@@ -4,7 +4,6 @@ import Application from "components/Application";
 import {
   render,
   cleanup,
-  debug,
   fireEvent,
   waitForElement,
   getByText,
@@ -19,6 +18,7 @@ import {
 afterEach(cleanup);
 
 describe("Application tests", () => {
+
   it("defaults to Monday and changes the schedule when a new day is selected", async () => {
     const { getByText } = render(<Application />);
 
@@ -32,6 +32,7 @@ describe("Application tests", () => {
      * renders, loads data and gets the first appointment
      */
     const { container } = render(<Application />);
+
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
     const appointments = getAllByTestId(container, "appointment");
@@ -52,10 +53,11 @@ describe("Application tests", () => {
 
     expect(getByText(appointment, "Saving")).toBeInTheDocument();
 
+    await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
+
     /*
      * checks that it reduces the spots remaining for the first day by 1
      */
-    await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
     const day = getAllByTestId(container, "day").find((d) =>
       queryByText(d, "Monday")
     );
@@ -67,6 +69,7 @@ describe("Application tests", () => {
      * renders, loads data and gets the appointment that contains "Archie Cohen"
      */
     const { container } = render(<Application />);
+
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
     const appointment = getAllByTestId(container, "appointment").find((a) =>
@@ -86,11 +89,11 @@ describe("Application tests", () => {
 
     expect(getByText(appointment, "Deleting")).toBeInTheDocument();
 
+    await waitForElement(() => queryByAltText(appointment, "Add"));
+
     /*
      * checks that it increases the spots remaining for the first day by 1
      */
-    await waitForElement(() => queryByAltText(appointment, "Add"));
-
     const day = getAllByTestId(container, "day").find((d) =>
       queryByText(d, "Monday")
     );
@@ -115,6 +118,7 @@ describe("Application tests", () => {
     fireEvent.click(queryByAltText(appointment, "Edit"));
 
     expect(getByDisplayValue(appointment, "Archie Cohen")).toBeInTheDocument();
+
     const input = getByDisplayValue(appointment, "Archie Cohen");
     fireEvent.change(input, {
       target: { value: "Jules Smith" },
@@ -126,18 +130,17 @@ describe("Application tests", () => {
 
     expect(getByText(appointment, "Saving")).toBeInTheDocument();
 
+    await waitForElement(() => getByText(appointment, "Jules Smith"));
+
     /*
      * checks that the spots remaining remains the same
      */
-    await waitForElement(() => getByText(appointment, "Jules Smith"));
-
     const day = getAllByTestId(container, "day").find((d) =>
       queryByText(d, "Monday")
     );
     expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
   });
 
-  /* mock to revert to the default behaviour after the single request that this test generates is complete */
   it("shows the save error when failing to save an appointment", async () => {
     /*
      * sets up the mock function before rendering the component
@@ -148,6 +151,7 @@ describe("Application tests", () => {
      * loads data and gets the first appointment
      */
     const { container } = render(<Application />);
+
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
     const appointments = getAllByTestId(container, "appointment");
@@ -169,7 +173,7 @@ describe("Application tests", () => {
     expect(getByText(appointment, "Saving")).toBeInTheDocument();
 
     /*
-     * checks that an error message is displayed
+     * checks that an error message is displayed when failing to save the appointment
      */
     await waitForElement(() => getByText(appointment, "Could not save."));
   });
@@ -193,6 +197,7 @@ describe("Application tests", () => {
     const appointment = getAllByTestId(container, "appointment").find((a) =>
       queryByText(a, "Archie Cohen")
     );
+
     fireEvent.click(queryByAltText(appointment, "Delete"));
 
     expect(
@@ -204,8 +209,9 @@ describe("Application tests", () => {
     expect(getByText(appointment, "Deleting")).toBeInTheDocument();
 
     /*
-     * checks that an error message is displayed
+     * checks that an error message is displayed when failing to cancel the appointment
      */
     await waitForElement(() => getByText(appointment, "Could not delete."));
   });
+
 });
