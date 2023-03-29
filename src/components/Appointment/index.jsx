@@ -21,7 +21,6 @@ import {
 import Form from "./Form";
 
 export default function Appointment(props) {
-  console.log(props);
   /*
    * props
    *
