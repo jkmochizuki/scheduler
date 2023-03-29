@@ -96,9 +96,6 @@ export default function useApplicationData() {
       .then(() => {
         dispatch({ type: SET_INTERVIEW, value: { id, interview } });
       })
-      .catch((err) => {
-        console.log("error:", err);
-      });
   };
 
   /* makes an HTTP request and updates the local state when an interview is canceled */
@@ -108,9 +105,6 @@ export default function useApplicationData() {
       .then(() => {
         dispatch({ type: SET_INTERVIEW, value: { id, interview: null } });
       })
-      .catch((err) => {
-        console.log("error:", err);
-      });
   };
 
   /* hook to connect to a WebSocket server */
