@@ -12,6 +12,10 @@ import {
   getByPlaceholderText,
   queryByText,
   queryByAltText,
+  getByDisplayValue,
+  getByRole,
+  getAllByDisplayValue,
+  getByLabelText,
 } from "@testing-library/react";
 
 afterEach(cleanup);
@@ -91,5 +95,46 @@ describe("Application tests", () => {
     );
     expect(getByText(day, "2 spots remaining")).toBeInTheDocument();
     });
+
+    it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
+      // 1. Render the Application.
+      const { container } = render(<Application />);
+  
+      // 2. Wait until the text "Archie Cohen" is displayed.
+      await waitForElement(() => getByText(container, "Archie Cohen"));
+  
+      // 3. Click the "Edit" button on the booked appointment.
+      const appointment = getAllByTestId(container, "appointment").find(a =>
+        queryByText(a, "Archie Cohen")
+      );
+      fireEvent.click(queryByAltText(appointment, "Edit"));
+      
+      // 4. Check that the interview is shown.
+      expect(getByDisplayValue(appointment, "Archie Cohen")).toBeInTheDocument();
+
+      const input = getByDisplayValue(appointment, "Archie Cohen");
+      fireEvent.change(input, {
+        target: { value: "Jules Smith" },
+      });
+
+      // 4. Check that the interview is shown.
+      expect(getByDisplayValue(appointment, "Jules Smith")).toBeInTheDocument();
+     
+
+      // 5. Click the "Save" button on the confirmation.
+      fireEvent.click(getByText(appointment, "Save"));
+  
+      // 6. Check that the element with the text "Saving" is displayed.
+      expect(getByText(appointment, "Saving")).toBeInTheDocument();
+  
+      // 7. Wait until the element with the new value is displayed.
+      await waitForElement(() => getByText(appointment, "Jules Smith"));
+  
+      // 8. Check that the DayListItem with the text "Monday" also has the same "1 spots remaining".
+      const day = getAllByTestId(container, "day").find(d =>
+      queryByText(d, "Monday")
+      );
+      expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
+      });
 
 });
