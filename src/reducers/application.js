@@ -22,8 +22,8 @@ export function reducer(state, action) {
 
   /* dispatch actions to set state */
   switch (action.type) {
-    case SET_DAY:
-      return { ...state, day: action.value };
+    // case SET_DAY:
+    //   return { ...state, day: action.value };
     case SET_APPLICATION_DATA:
       return {
         ...state,
