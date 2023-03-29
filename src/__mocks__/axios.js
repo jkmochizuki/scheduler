@@ -54,9 +54,10 @@ const fixtures = {
   },
 };
 
-/* mocks the axios.get functions */
+/* mocks the axios get, put, and delete functions */
 export default {
   defaults: { baseURL: "" },
+
   get: jest.fn((url) => {
     // eslint-disable-next-line default-case
     switch (url) {
@@ -79,7 +80,21 @@ export default {
           status: 200,
           statusText: "OK",
           data: fixtures.interviewers,
-      });
+        });
     }
-  })
+  }),
+
+  put: jest.fn((url) => {
+    return Promise.resolve({
+      status: 200,
+      statusText: "No Content",
+    });
+  }),
+
+  delete: jest.fn((url) => {
+    return Promise.resolve({
+      status: 200,
+      statusText: "No Content",
+    });
+  }),
 };
