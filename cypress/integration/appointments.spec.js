@@ -1,40 +1,59 @@
 describe("Appointments test", () => {
   beforeEach(() => {
-    // reset database test
     cy.request("GET", "/api/debug/reset");
 
-    // visits the root of the web server
     cy.visit("/");
     cy.contains("Monday");
   });
+
   it("should book an interview", () => {
-    // clicks the add button
+    /*
+     * actions to book an interview
+     */
     cy.get("[alt=Add]").first().click();
-
-    // enters student name
-    cy.get("[data-testid=student-name-input]").type("Lydia Miller-Jones");
-
-    // chooses an interviewer
+    cy.get("[data-testid=student-name-input]").type("Lydia Miller-Jones", {
+      delay: 100,
+    });
     cy.get("[alt='Sylvia Palmer']").click();
-
-    // clicks the save button
     cy.contains("Save").click();
 
-    // sees the booked appointment
+    /*
+     * sees the booked appointment
+     */
     cy.contains(".appointment__card--show", "Lydia Miller-Jones");
     cy.contains(".appointment__card--show", "Sylvia Palmer");
   });
 
   it("should edit an interview", () => {
-    // Clicks the edit button for the existing appointment
-    // Changes the name and interviewer
-    // Clicks the save button
-    // Sees the edit to the appointment
+    /*
+     * actions to edit an interview
+     */
+    cy.get("[alt=Edit]").first().click({ force: true });
+    cy.get("[data-testid=student-name-input]")
+      .clear()
+      .type("Leopold Silvers", { delay: 100 });
+    cy.get("[alt='Tori Malcolm']").click();
+    cy.contains("Save").click();
+
+    /*
+     * sees the edited appointment
+     */
+    cy.contains(".appointment__card--show", "Leopold Silvers");
+    cy.contains(".appointment__card--show", "Tori Malcolm");
   });
 
   it("should cancel an interview", () => {
-    // Clicks the delete button for the existing appointment
-    // Clicks the confirm button
-    // Sees that the appointment slot is empty
+    /*
+     * actions to cancel an interview
+     */
+    cy.get("[alt=Delete]").click({ force: true });
+    cy.contains("Confirm").click();
+    cy.contains("Deleting").should("exist");
+
+    /*
+     * sees that the appointment slot is empty
+     */
+    cy.contains("Deleting").should("not.exist");
+    cy.contains(".appointment__card--show", "Archie Cohen").should("not.exist");
   });
 });
