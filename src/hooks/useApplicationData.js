@@ -43,7 +43,7 @@ export default function useApplicationData() {
   /* makes an HTTP request and updates the local state when a new interview is booked */
   const bookInterview = (id, interview) => {
     return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, { interview })
+      .put(`/api/appointments/${id}`, { interview })
       .then(() => {
         dispatch({ type: SET_INTERVIEW, value: { id, interview } });
       })
@@ -52,7 +52,7 @@ export default function useApplicationData() {
   /* makes an HTTP request and updates the local state when an interview is canceled */
   const cancelInterview = (id, interview) => {
     return axios
-      .delete(`http://localhost:8001/api/appointments/${id}`, { interview })
+      .delete(`/api/appointments/${id}`, { interview })
       .then(() => {
         dispatch({ type: SET_INTERVIEW, value: { id, interview: null } });
       })
