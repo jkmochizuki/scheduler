@@ -4,23 +4,23 @@ React scheduler application that allows users to book and cancel interviews. It 
 
 ## Final Product
 
-### A user can switch between weekdays:
+#### A user can switch between weekdays:
 
 ![gif switch weekdays"](https://github.com/jkmochizuki/scheduler/blob/master/docs/days.gif)
 
-### A user can book an interview by entering the student name and selecting the interviewer. The remaining spots counter updates dynamically:
+#### A user can book an interview by entering the student name and selecting the interviewer. The remaining spots counter updates dynamically:
 
 ![gif book interview"](https://github.com/jkmochizuki/scheduler/blob/master/docs/book_an_interview.gif)
 
-### A user can edit the details or cancel an existing interview:
+#### A user can edit the details or cancel an existing interview:
 
 ![gif edit and delete interview"](https://github.com/jkmochizuki/scheduler/blob/master/docs/edit_and_delete_interviews.gif)
 
-### A user is shown an error if an interview cannot be saved or deleted:
+#### A user is shown an error if an interview cannot be saved or deleted:
 
 ![gif error handling"](https://github.com/jkmochizuki/scheduler/blob/master/docs/error_handling.gif)
 
-### The client application communicates with a WebSocket server. When a user books or cancels an interview, all connected users see the update in their browser:
+#### The client application communicates with a WebSocket server. When a user books or cancels an interview, all connected users see the update in their browser:
 
 ![gif websocket server"](https://github.com/jkmochizuki/scheduler/blob/master/docs/websocket_server.gif)
 
@@ -35,20 +35,27 @@ React scheduler application that allows users to book and cancel interviews. It 
 ### API Server
 
 In another terminal window:
-- Clone the API server repository: git@github.com:jkmochizuki/scheduler-api.git
-- cd scheduler-api
-- Run the API server with `npm start`
+- Clone the API server repository: https://github.com/lighthouse-labs/scheduler-api
+- Follow the instructions in the README file
 
-### Jest Test Framework
+### Running Tests
+
+#### Jest Test Framework
 
 ```sh
 npm test
 ```
 
-### Storybook Visual Testbed
+#### Storybook Visual Testbed
 
 ```sh
 npm run storybook
+```
+
+#### Cypress
+
+```sh
+npm run cypress
 ```
 
 ## Dependencies
