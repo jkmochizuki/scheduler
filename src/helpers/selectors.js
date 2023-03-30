@@ -1,10 +1,9 @@
+/* returns appointments for a given day */
 export function getAppointmentsForDay(state, day) {
-  const filteredDays = state.days.filter((item) => item.name === day);
+  const filteredDays = state.days.find((item) => item.name === day);
 
-  if (filteredDays.length > 0) {
-    const appointmentsArray = filteredDays[0].appointments;
-
-    /* Loops through appointments array for the day and returns a new array with the appointments objects that match the ids */
+  if (filteredDays) {
+    const appointmentsArray = filteredDays.appointments;
     const appointmentsForDay = appointmentsArray.map(
       (id) => state.appointments[id]
     );
@@ -13,11 +12,11 @@ export function getAppointmentsForDay(state, day) {
   return [];
 }
 
+/* returns the interview for a given appointment */
 export function getInterview(state, appointment) {
   if (appointment) {
-    /* Finds the interviewer id and updates the appointment object to include the interviewer object */
     const interviewer = Object.values(state.interviewers).find(
-      (interviewer) => appointment.interviewer === interviewer.id
+      (item) => appointment.interviewer === item.id
     );
     return {
       ...appointment,
@@ -27,13 +26,12 @@ export function getInterview(state, appointment) {
   return null;
 }
 
+/* returns interviewers for a given day */
 export function getInterviewersForDay(state, day) {
-  const filteredDays = state.days.filter((item) => item.name === day);
+  const filteredDays = state.days.find((item) => item.name === day);
 
-  if (filteredDays.length > 0) {
-    const interviewersArray = filteredDays[0].interviewers;
-
-    /* Loops through interviewers array for the day and returns a new array with the interviewers objects that match the ids */
+  if (filteredDays) {
+    const interviewersArray = filteredDays.interviewers;
     const interviewersForDay = interviewersArray.map(
       (id) => state.interviewers[id]
     );
@@ -41,3 +39,18 @@ export function getInterviewersForDay(state, day) {
   }
   return [];
 }
+
+  /* when an appointment is added or removed, it updates the number of spots remaining in that day */
+  export function updateSpots(state, appointments, id) {
+    const day = state.days.find((d) => d.appointments.includes(id));
+    const nullAppointments = day.appointments.filter(
+      (appointmentId) => appointments[appointmentId].interview === null
+    );
+    const spots = nullAppointments.length;
+
+    const days = state.days.map((d) =>
+      d.appointments.includes(id) ? { ...d, spots } : d
+    );
+
+    return days;
+  };

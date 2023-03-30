@@ -1,11 +1,10 @@
 import { useState } from "react";
 
-/*  takes an initial argument to set the mode state and returns an object */
 export default function useVisualMode (initial) {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
  
-  /* takes in a new mode and a replace argument, updates the mode and history state with the new value */
+  /* updates the mode and history state with the new mode */
   const transition = function(mode, replace = false) {
     setMode(mode);
 

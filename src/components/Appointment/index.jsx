@@ -21,80 +21,66 @@ import {
 import Form from "./Form";
 
 export default function Appointment(props) {
-  /*
-   * props
-   *
-   * id: number
-   * time: string
-   * interview: array of objects - representing the appointment's interview. each object contains:
-   *   student: string - name of the student to be interviewed
-   *   interviewer: object - contains the interviewer's name
-   * bookInterview: function
-   * cancelInterview: function
-   */
+  const { id, time, interview, interviewers, bookInterview, cancelInterview } =
+    props;
 
-  /* when props.interview contains a value, we pass SHOW mode, if it is empty then we pass EMPTY mode */
-  
-  const { mode, transition, back } = useVisualMode(
-    props.interview ? SHOW : EMPTY
-  );
+  /* when interview contains a value, we pass SHOW mode, if it is empty then we pass EMPTY mode */
+  const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
-  /* updates the state when the update comes from WebSocket server */
+  /* updates the mode when the update comes from WebSocket server */
   useEffect(() => {
-    if (props.interview && mode === EMPTY) {
-     transition(SHOW);
+    if (interview && mode === EMPTY) {
+      transition(SHOW);
     }
-    if (props.interview === null && mode === SHOW) {
-     transition(EMPTY);
+    if (interview === null && mode === SHOW) {
+      transition(EMPTY);
     }
-   }, [props.interview, transition, mode]);
-   
+  }, [interview, transition, mode]);
+
+  /* saves a new booked interview */
   function save(name, interviewer) {
     const interview = {
       student: name,
       interviewer
     };
-
     transition(SAVING);
-
-    props
-      .bookInterview(props.id, interview)
+    bookInterview(id, interview)
       .then(() => transition(SHOW))
-      .catch((err) => transition(ERROR_SAVE, true)); // ERROR_SAVE replaces the SAVING mode in the history state
+      .catch((err) => transition(ERROR_SAVE, true));
   }
 
-  function destroy(event) {
+  /* deletes an interview */
+  function destroy() {
     transition(DELETING, true);
-    props
-      .cancelInterview(props.id)
+    cancelInterview(id)
       .then(() => transition(EMPTY))
       .catch((err) => transition(ERROR_DELETE, true));
   }
 
   return (
-    <article className="appointment"  data-testid="appointment">
-      <Header time={props.time} />
-      {mode === EMPTY && (<Empty onAdd={() => transition(CREATE)} />)}
-      {mode === SHOW && props.interview && (
+    <article className="appointment" data-testid="appointment">
+      <Header time={time} />
+      {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
+      {mode === SHOW && interview && (
         <Show
-          student={props.interview.student}
-          interviewer={props.interview.interviewer.name}
+          student={interview.student}
+          interviewer={interview.interviewer.name}
           onDelete={() => transition(CONFIRM)}
           onEdit={() => transition(EDIT)}
         />
       )}
       {mode === CREATE && (
         <Form
-          interviewers={props.interviewers}
+          interviewers={interviewers}
           onCancel={() => back()}
           onSave={save}
         />
       )}
       {mode === EDIT && (
         <Form
-          student={props.interview.student}
-          interviewer={props.interview.interviewer.id}
-          interviewers={props.interviewers}
+          student={interview.student}
+          interviewer={interview.interviewer.id}
+          interviewers={interviewers}
           onCancel={() => back()}
           onSave={save}
         />

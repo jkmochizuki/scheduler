@@ -1,4 +1,4 @@
-/* static data to be imported or embedded into the test file */
+/* static data to be embedded into the test file */
 const fixtures = {
   days: [
     {

@@ -2,22 +2,16 @@ import Button from "components/Button";
 import React from "react";
 
 export default function Confirm(props) {
-  /*
-   * props
-   *
-   * message: string - message to display in the confirmation dialog
-   * onConfirm: function - will be called when the user confirms the action
-   * onCancel: function - will be called when the user cancels the action
-   */
+  const { message, onCancel, onConfirm } = props;
 
   return (
     <main className="appointment__card appointment__card--confirm">
-      <h1 className="text--semi-bold">{props.message}</h1>
+      <h1 className="text--semi-bold">{message}</h1>
       <section className="appointment__actions">
-        <Button danger onClick={props.onCancel}>
+        <Button danger onClick={onCancel}>
           Cancel
         </Button>
-        <Button danger onClick={props.onConfirm}>
+        <Button danger onClick={onConfirm}>
           Confirm
         </Button>
       </section>

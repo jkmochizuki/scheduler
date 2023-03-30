@@ -3,23 +3,9 @@ import {
   SET_DAY,
   SET_INTERVIEW,
 } from "helpers/constants";
+import { updateSpots } from "helpers/selectors";
 
 export function reducer(state, action) {
-  /* when an appointment is added or removed, it updates the number of spots remaining in that day */
-  const updateSpots = (appointments, id) => {
-    const day = state.days.find((day) => day.appointments.includes(id));
-    const nullAppointments = day.appointments.filter(
-      (appointmentId) => appointments[appointmentId].interview === null
-    );
-    const spots = nullAppointments.length;
-
-    const days = state.days.map((d) =>
-      d.appointments.includes(id) ? { ...d, spots } : d
-    );
-
-    return days;
-  };
-
   /* dispatch actions to set state */
   switch (action.type) {
     case SET_DAY:
@@ -40,7 +26,7 @@ export function reducer(state, action) {
         ...state.appointments,
         [action.value.id]: appointment,
       };
-      const days = updateSpots(appointments, action.value.id);
+      const days = updateSpots(state, appointments, action.value.id);
 
       return {
         ...state,

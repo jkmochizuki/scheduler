@@ -29,7 +29,7 @@ describe("Application tests", () => {
 
   it("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
     /*
-     * renders, loads data and gets the first appointment
+     * renders Application component, loads data and gets the first appointment
      */
     const { container } = render(<Application />);
 
@@ -66,7 +66,7 @@ describe("Application tests", () => {
 
   it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
     /*
-     * renders, loads data and gets the appointment that contains "Archie Cohen"
+     * renders Application component, loads data and gets the appointment that contains "Archie Cohen"
      */
     const { container } = render(<Application />);
 
@@ -102,7 +102,7 @@ describe("Application tests", () => {
 
   it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
     /*
-     * renders, loads data and gets the appointment that contains "Archie Cohen"
+     * renders Application component, loads data and gets the appointment that contains "Archie Cohen"
      */
     const { container } = render(<Application />);
 
@@ -176,6 +176,10 @@ describe("Application tests", () => {
      * checks that an error message is displayed when failing to save the appointment
      */
     await waitForElement(() => getByText(appointment, "Could not save."));
+
+    fireEvent.click(getByAltText(appointment, 'Close'));
+
+    expect(getByAltText(appointment, "Sylvia Palmer")).toBeInTheDocument();
   });
 
   it("shows the delete error when failing to delete an existing appointment", async () => {
@@ -185,7 +189,7 @@ describe("Application tests", () => {
     axios.delete.mockRejectedValueOnce();
 
     /*
-     * renders, loads data and gets the appointment that contains "Archie Cohen"
+     * renders Application component, loads data and gets the appointment that contains "Archie Cohen"
      */
     const { container } = render(<Application />);
 
@@ -212,6 +216,10 @@ describe("Application tests", () => {
      * checks that an error message is displayed when failing to cancel the appointment
      */
     await waitForElement(() => getByText(appointment, "Could not delete."));
+
+    fireEvent.click(getByAltText(appointment, "Close"));
+
+    expect(getByText(appointment, "Archie Cohen")).toBeInTheDocument();
   });
 
 });
