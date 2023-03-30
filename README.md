@@ -6,23 +6,23 @@ React scheduler application that allows users to book and cancel interviews. It 
 
 ### A user can switch between weekdays:
 
-![gif switch weekdays"]()
+![gif switch weekdays"](https://github.com/jkmochizuki/scheduler/blob/master/docs/days.gif)
 
 ### A user can book an interview by entering the student name and selecting the interviewer. The remaining spots counter updates dynamically:
 
-![gif book interview"]()
+![gif book interview"](https://github.com/jkmochizuki/scheduler/blob/master/docs/book_an_interview.gif)
 
 ### A user can edit the details or cancel an existing interview:
 
-![gif edit and delete interview"]()
+![gif edit and delete interview"](https://github.com/jkmochizuki/scheduler/blob/master/docs/edit_and_delete_interviews.gif)
 
 ### A user is shown an error if an interview cannot be saved or deleted:
 
-![gif error handling"]()
+![gif error handling"](https://github.com/jkmochizuki/scheduler/blob/master/docs/error_handling.gif)
 
 ### The client application communicates with a WebSocket server. When a user books or cancels an interview, all connected users see the update in their browser:
 
-![gif websocket server"]()
+![gif websocket server"](https://github.com/jkmochizuki/scheduler/blob/master/docs/websocket_server.gif)
 
 ## Getting Started
 
