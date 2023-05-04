@@ -23,7 +23,7 @@ export default function useApplicationData() {
   const setDay = (day) => {
     dispatch({ type: SET_DAY, value: day });
   };
-
+ 
   /* hook that fires only after the initial render, to load days, appointments, and interviewers */
   useEffect(() => {
     Promise.all([
